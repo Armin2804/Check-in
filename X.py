@@ -25,13 +25,18 @@ def send_sms(message):
 
 # Monitor "X" for new updates from a specific page
 def monitor_x_service():
-    # Make API request to "X" to check for new updates
+    # Make API request to "X"
     headers = {
         'X-API-Key': x_api_key,
         'X-API-Secret': x_api_secret
     }
+
+    try:
+        response = requests.get('https://x.com/1337FIL', headers=headers)
+    except requests.exceptions.RequestException as e:
+        print("Error:", e)
+        return
     
-    response = requests.get('https://x.com/1337FIL', headers=headers)
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, 'html.parser')
         latest_post = soup.find('div', class_='post')  # Assuming posts are in a <div> with class 'post'
